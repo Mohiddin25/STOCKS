@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import exp from "express";
 import fetchNews from "./services/newsService.js";
 import {authRouter} from "./APIs/authApi.js";
+import {getGainersAndLosersRouter} from "./APIs/getGainersAndLosers.js";
 import {connect} from "mongoose";
 
 const app = exp();
@@ -10,6 +11,7 @@ dotenv.config();
 
 app.use(exp.json());
 app.use('/auth', authRouter);
+app.use('/market', getGainersAndLosersRouter);
 
 const connectDB=async()=>{
     try{

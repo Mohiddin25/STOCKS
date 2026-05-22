@@ -6,3 +6,7 @@ Content-Type: application/json
     "email":"Khasim@gmail.com",
     "pin":"123456"
 }
+
+
+#### Get Gainers and Losers
+GET http://localhost:3000/market/gainers-losers
