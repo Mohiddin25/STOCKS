@@ -1,12 +1,54 @@
-###Login
+### Login
 POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "email":"Khasim@gmail.com",
-    "pin":"123456"
+    "email": "Khasim@gmail.com",
+    "pin": "123456"
 }
 
+####logout 
+POST http://localhost:3000/auth/logout
 
-#### Get Gainers and Losers
-GET http://localhost:3000/market/gainers-losers
+### Get Watchlist (protected)
+# After successful login copy the `token` cookie value and add it to the `Cookie` header below as `token=<value>`
+GET http://localhost:3000/watchlist
+
+
+### Add to Watchlist (protected)
+POST http://localhost:3000/watchlist/add
+Content-Type: application/json
+
+{
+    "symbol": "AAPL",
+    "name": "Apple Inc"
+}
+
+### Remove from Watchlist (protected)
+DELETE http://localhost:3000/watchlist/remove/AAPL
+
+
+### Get Market Movers (protected)
+# Note: This route is protected by verifyToken() and requires the Cookie header
+GET http://localhost:3000/stock/movers
+
+
+### Get Single Stock Quote (protected)
+# Note: This route is protected by verifyToken() and requires the Cookie header
+# WARNING: Calling this will throw a ReferenceError in the backend (companyName is not defined)
+GET http://localhost:3000/stock/RELIANCE.NS
+
+
+### AI News + Gemini Analysis for a Symbol (protected)
+# Note: This route is protected by verifyToken() and requires the Cookie header
+GET http://localhost:3000/news/RELIANCE.NS
+
+
+### Google OAuth Login (placeholder)
+# WARNING: This route is unimplemented in authApi.js and will hang without responding
+POST http://localhost:3000/auth/google-login
+Content-Type: application/json
+
+{
+    "tokenId": "<GOOGLE_ID_TOKEN>"
+}

@@ -12,13 +12,7 @@ const userSchema = new Schema({
     },
     pin:{
         type:String,
-        required:true,
-        minLength:4,
-        maxLength:4
-    },
-    watchlist:{
-        type:[String],
-        default:[]
+        required:true
     }
 },{
     timestamps:true,

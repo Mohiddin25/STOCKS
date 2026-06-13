@@ -29,14 +29,29 @@ authRouter.post('/login', async (req, res) => {
 
 
     }catch(error){
-        res.status(500).json({message:"Server error"});
+        res.status(500).json({message:error.message});
     }
 })
 
+authRouter.post('/logout', (req, res) => {
+    try {
+        res.clearCookie('token');
+
+        return res.status(200).json({
+            message: 'Logout successful'
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Logout failed'
+        });
+    }
+});
+
 
 // Oauth login and also register with google
-authRouter.post('/google-login', async (req, res) => {
-    // this route will handle both login and registration with google
-    // implementation will be done in the future
-})
+// authRouter.post('/google-login', async (req, res) => {
+//     // this route will handle both login and registration with google
+//     // implementation will be done in the future
+// })
 
