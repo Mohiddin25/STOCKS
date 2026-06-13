@@ -441,7 +441,7 @@ export default function App() {
 
       {/* FOOTER */}
       <footer className="border-t border-slate-900 bg-slate-950 py-8 text-center text-xs text-slate-600">
-        <p>© 2026 Antigravity Stocks AI. All rights reserved. Live markets, analyzed by intelligence.</p>
+        <p>© 2026 Stocks AI. All rights reserved. Live markets, analyzed by intelligence.</p>
       </footer>
 
       {/* AUTHENTICATION MODAL */}
