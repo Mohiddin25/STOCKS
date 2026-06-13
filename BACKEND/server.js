@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import exp from "express";
+import cors from "cors";
 import {authRouter} from "./APIs/authApi.js";
 import {connect} from "mongoose";
 import aiNewsApiRouter from "./APIs/aiNewsApi.js";
@@ -10,6 +11,10 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 
 const app = exp();
+app.use(cors({
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    credentials: true
+}));
 app.use(cookieParser());
 app.use(exp.json());
 app.use('/auth', authRouter);
