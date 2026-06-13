@@ -144,7 +144,7 @@ export const getStockNews = async (symbol) => {
   const formattedSymbol = formatSymbol(symbol);
   try {
     const searchRes = await fetch(`https://query2.finance.yahoo.com/v1/finance/search?q=${formattedSymbol}`);
-    if (!searchRes.ok) {
+    if (!searchRes) {
       throw new Error(`Search API returned status ${searchRes.status}`);
     }
     const data = await searchRes.json();
