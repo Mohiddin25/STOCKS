@@ -12,7 +12,11 @@ dotenv.config();
 
 const app = exp();
 app.use(cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173","https://stocks-kappa-flame.vercel.app"],
+    origin: (origin, callback) => {
+        // Mirror the requesting origin dynamically to support multiple preview/production hosts
+        if (!origin) return callback(null, true);
+        return callback(null, true);
+    },
     credentials: true
 }));
 app.use(cookieParser());
@@ -22,17 +26,18 @@ app.use('/news', aiNewsApiRouter);
 app.use('/watchlist', watchlistRouter);
 app.use('/stock', stockRouter);
 
-const connectDB=async()=>{
-    try{
-        const url=process.env.MONGODB_URI;
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`server listening on port ${port}...`));
+
+const connectDB = async () => {
+    try {
+        const url = process.env.MONGODB_URI || "mongodb://localhost:27017/stockapp";
         await connect(url);
-        console.log("DB connected");
-        const port=process.env.PORT || 3000;
-        app.listen(port,()=>console.log(`server listening on ${port}...`))
-    }catch(err){
-        console.log("error in DB connection",err)
+        console.log("DB connected successfully");
+    } catch (err) {
+        console.error("error in DB connection:", err.message);
     }
-}
-connectDB()
+};
+connectDB();
 
     
