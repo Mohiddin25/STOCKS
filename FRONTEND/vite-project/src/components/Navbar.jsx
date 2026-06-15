@@ -151,7 +151,7 @@ export default function Navbar({
                   onClick={() => setShowProfileMenu((prev) => !prev)}
                   className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-600 font-bold text-white shadow-md cursor-pointer select-none focus:ring-2 focus:ring-purple-800"
                 >
-                  {((user?.name || user?.email || '?')[0] || '?').toUpperCase()}
+                  {(user.name || user.email || 'U').charAt(0).toUpperCase()}
                 </button>
                 
                 {/* Profile Click Dropdown */}
