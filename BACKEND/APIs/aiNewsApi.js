@@ -1,13 +1,13 @@
 import express from 'express';
 import { getStockNews } from '../services/stockService.js';
 import { analyzeNews } from '../services/geminiService.js';
-import { verifyToken } from '../middlewares/verifyToken.js';
 
 const aiNewsRouter = express.Router();
 
 // Fetches news related to the stock symbol and passes it to Gemini AI for sentiment analysis.
+// This route is public and does not require authentication.
 
-aiNewsRouter.get('/:symbol', verifyToken(), async (req, res) => {
+aiNewsRouter.get('/:symbol', async (req, res) => {
   const { symbol } = req.params;
   try {
     // 1. Fetch news articles from Yahoo Finance search
