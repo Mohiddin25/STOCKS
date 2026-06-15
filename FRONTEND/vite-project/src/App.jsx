@@ -111,7 +111,7 @@ export default function App() {
 
   const fetchMovers = async () => {
     try {
-      const res = await fetch(`${API_BASE}/stock/movers`);
+      const res = await fetch(`${API_BASE}/stock/movers`, { credentials: 'include' });
       if (res.ok) {
         const data = await res.json();
         setMovers(data);
@@ -124,7 +124,7 @@ export default function App() {
   const fetchGeneralNews = async () => {
     setNewsLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/news/NIFTY`);
+      const res = await fetch(`${API_BASE}/news/NIFTY`, { credentials: 'include' });
       if (res.ok) {
         const data = await res.json();
         setGeneralNews(data);
@@ -144,7 +144,7 @@ export default function App() {
     setSearchedNews(null);
 
     try {
-      const stockRes = await fetch(`${API_BASE}/stock/${symbol}`);
+      const stockRes = await fetch(`${API_BASE}/stock/${symbol}`, { credentials: 'include' });
       if (!stockRes.ok) {
         const errData = await stockRes.json();
         throw new Error(errData.message || 'Stock symbol not found or lookup failed');
@@ -153,7 +153,7 @@ export default function App() {
       setSearchedStock(stockData);
 
       // Fetch AI analysis & specific stock news
-      const newsRes = await fetch(`${API_BASE}/news/${symbol}`);
+      const newsRes = await fetch(`${API_BASE}/news/${symbol}`, { credentials: 'include' });
       if (newsRes.ok) {
         const newsData = await newsRes.json();
         setSearchedNews(newsData);
