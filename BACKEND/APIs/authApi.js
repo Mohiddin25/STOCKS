@@ -23,8 +23,8 @@ authRouter.post('/login', async (req, res) => {
         const token=createToken(user);
         res.cookie("token",token,{
         httpOnly:true,
-        sameSite:"lax",
-        secure:false, // set to true in production
+        sameSite:"None",
+        secure:true, // set to true in production
         })
         res.json({message:"Login successful",payload:user});
 
@@ -38,8 +38,8 @@ authRouter.post('/logout', (req, res) => {
     try {
         res.clearCookie('token', {
             httpOnly: true,
-            sameSite: "lax",
-            secure: false
+            sameSite: "None",
+            secure: true
         });
 
         return res.status(200).json({
@@ -93,8 +93,8 @@ authRouter.post('/register', async (req, res) => {
         const token = createToken(newUser);
         res.cookie("token", token, {
             httpOnly: true,
-            sameSite: "lax",
-            secure: false,
+            sameSite: "None",
+            secure: true,
         });
 
         res.status(201).json({ message: "Registration successful", user: newUser });
@@ -129,8 +129,8 @@ authRouter.post('/google-auth', async (req, res) => {
             const token = createToken(user);
             res.cookie("token", token, {
                 httpOnly: true,
-                sameSite: "lax",
-                secure: false,
+                sameSite: "None",
+                secure: true,
             });
             return res.json({ isNewUser: false, user, message: "Login successful" });
         } else {
@@ -168,8 +168,8 @@ authRouter.post('/create-pin', async (req, res) => {
         const token = createToken(newUser);
         res.cookie("token", token, {
             httpOnly: true,
-            sameSite: "lax",
-            secure: false,
+            sameSite: "None",
+            secure: true,
         });
 
         res.status(201).json({ message: "PIN created and registration successful", user: newUser });
