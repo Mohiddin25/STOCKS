@@ -32,12 +32,13 @@ export default function App() {
   const [generalNews, setGeneralNews] = useState(null);
   const [newsLoading, setNewsLoading] = useState(false);
   const [watchlist, setWatchlist] = useState([]);
+  const API_BASE = 'https://stocks-sgv3.onrender.com';
 
   // Check active user session on app mount
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const res = await fetch('/auth/me');
+        const res = await fetch(`${API_BASE}/auth/me`, { credentials: 'include' });
         if (res.ok) {
           const data = await res.json();
           setUser(data.user);
@@ -67,7 +68,7 @@ export default function App() {
 
   const fetchWatchlist = async () => {
     try {
-      const res = await fetch('/watchlist');
+      const res = await fetch(`${API_BASE}/watchlist`, { credentials: 'include' });
       if (res.ok) {
         const data = await res.json();
         setWatchlist(data);
@@ -84,16 +85,18 @@ export default function App() {
 
     try {
       if (isWatchlisted) {
-        const res = await fetch(`/watchlist/remove/${cleanSymbol}`, {
+        const res = await fetch(`${API_BASE}/watchlist/remove/${cleanSymbol}`, {
           method: 'DELETE',
+          credentials: 'include',
         });
         if (res.ok) {
           setWatchlist(prev => prev.filter(item => item.symbol !== cleanSymbol));
         }
       } else {
-        const res = await fetch('/watchlist/add', {
+        const res = await fetch(`${API_BASE}/watchlist/add`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
           body: JSON.stringify({ symbol: cleanSymbol, name }),
         });
         if (res.ok) {
@@ -108,7 +111,7 @@ export default function App() {
 
   const fetchMovers = async () => {
     try {
-      const res = await fetch('/stock/movers');
+      const res = await fetch(`${API_BASE}/stock/movers`);
       if (res.ok) {
         const data = await res.json();
         setMovers(data);
@@ -121,7 +124,7 @@ export default function App() {
   const fetchGeneralNews = async () => {
     setNewsLoading(true);
     try {
-      const res = await fetch('/news/NIFTY');
+      const res = await fetch(`${API_BASE}/news/NIFTY`);
       if (res.ok) {
         const data = await res.json();
         setGeneralNews(data);
@@ -141,7 +144,7 @@ export default function App() {
     setSearchedNews(null);
 
     try {
-      const stockRes = await fetch(`/stock/${symbol}`);
+      const stockRes = await fetch(`${API_BASE}/stock/${symbol}`);
       if (!stockRes.ok) {
         const errData = await stockRes.json();
         throw new Error(errData.message || 'Stock symbol not found or lookup failed');
@@ -150,7 +153,7 @@ export default function App() {
       setSearchedStock(stockData);
 
       // Fetch AI analysis & specific stock news
-      const newsRes = await fetch(`/news/${symbol}`);
+      const newsRes = await fetch(`${API_BASE}/news/${symbol}`);
       if (newsRes.ok) {
         const newsData = await newsRes.json();
         setSearchedNews(newsData);
@@ -181,9 +184,10 @@ export default function App() {
     setError('');
     setSuccessMsg('');
     try {
-      const res = await fetch('/auth/login', {
+      const res = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ email, pin }),
       });
       const data = await res.json();
@@ -204,9 +208,10 @@ export default function App() {
     setError('');
     setSuccessMsg('');
     try {
-      const res = await fetch('/auth/register', {
+      const res = await fetch(`${API_BASE}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ email, name, pin }),
       });
       const data = await res.json();
@@ -225,9 +230,10 @@ export default function App() {
   const handleGoogleCredentialResponse = async (response) => {
     setError('');
     try {
-      const res = await fetch('/auth/google-auth', {
+      const res = await fetch(`${API_BASE}/auth/google-auth`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ credential: response.credential }),
       });
       const data = await res.json();
@@ -253,9 +259,10 @@ export default function App() {
     try {
       const mockEmail = 'demo_investor@gmail.com';
       const mockName = 'Demo Investor';
-      const res = await fetch('/auth/google-auth', {
+      const res = await fetch(`${API_BASE}/auth/google-auth`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           mockUser: { email: mockEmail, name: mockName }
         }),
@@ -282,9 +289,10 @@ export default function App() {
     e.preventDefault();
     setError('');
     try {
-      const res = await fetch('/auth/create-pin', {
+      const res = await fetch(`${API_BASE}/auth/create-pin`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           email: googleTempUser.email,
           name: googleTempUser.name,
@@ -305,7 +313,7 @@ export default function App() {
 
   const handleLogout = async () => {
     try {
-      await fetch('/auth/logout', { method: 'POST' });
+      await fetch(`${API_BASE}/auth/logout`, { method: 'POST', credentials: 'include' });
       setUser(null);
       clearSearch();
     } catch (err) {
