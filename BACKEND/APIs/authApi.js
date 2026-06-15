@@ -21,10 +21,11 @@ authRouter.post('/login', async (req, res) => {
             return res.status(400).json({message:"Invalid pin"});
         }
         const token=createToken(user);
+        const isProd = process.env.NODE_ENV === 'production' || (req.get('host') && !req.get('host').includes('localhost') && !req.get('host').includes('127.0.0.1'));
         res.cookie("token",token,{
         httpOnly:true,
-        sameSite:"None",
-        secure:true, // set to true in production
+        sameSite: isProd ? "none" : "lax",
+        secure: isProd,
         })
         res.json({message:"Login successful",payload:user});
 
@@ -36,10 +37,11 @@ authRouter.post('/login', async (req, res) => {
 
 authRouter.post('/logout', (req, res) => {
     try {
+        const isProd = process.env.NODE_ENV === 'production' || (req.get('host') && !req.get('host').includes('localhost') && !req.get('host').includes('127.0.0.1'));
         res.clearCookie('token', {
             httpOnly: true,
-            sameSite: "None",
-            secure: true
+            sameSite: isProd ? "none" : "lax",
+            secure: isProd
         });
 
         return res.status(200).json({
@@ -91,10 +93,11 @@ authRouter.post('/register', async (req, res) => {
         await newUser.save();
 
         const token = createToken(newUser);
+        const isProd = process.env.NODE_ENV === 'production' || (req.get('host') && !req.get('host').includes('localhost') && !req.get('host').includes('127.0.0.1'));
         res.cookie("token", token, {
             httpOnly: true,
-            sameSite: "None",
-            secure: true,
+            sameSite: isProd ? "none" : "lax",
+            secure: isProd,
         });
 
         res.status(201).json({ message: "Registration successful", user: newUser });
@@ -127,10 +130,11 @@ authRouter.post('/google-auth', async (req, res) => {
         const user = await User.findOne({ email });
         if (user) {
             const token = createToken(user);
+            const isProd = process.env.NODE_ENV === 'production' || (req.get('host') && !req.get('host').includes('localhost') && !req.get('host').includes('127.0.0.1'));
             res.cookie("token", token, {
                 httpOnly: true,
-                sameSite: "None",
-                secure: true,
+                sameSite: isProd ? "none" : "lax",
+                secure: isProd,
             });
             return res.json({ isNewUser: false, user, message: "Login successful" });
         } else {
@@ -166,10 +170,11 @@ authRouter.post('/create-pin', async (req, res) => {
         await newUser.save();
 
         const token = createToken(newUser);
+        const isProd = process.env.NODE_ENV === 'production' || (req.get('host') && !req.get('host').includes('localhost') && !req.get('host').includes('127.0.0.1'));
         res.cookie("token", token, {
             httpOnly: true,
-            sameSite: "None",
-            secure: true,
+            sameSite: isProd ? "none" : "lax",
+            secure: isProd,
         });
 
         res.status(201).json({ message: "PIN created and registration successful", user: newUser });
