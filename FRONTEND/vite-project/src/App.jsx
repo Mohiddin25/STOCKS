@@ -32,7 +32,7 @@ export default function App() {
   const [generalNews, setGeneralNews] = useState(null);
   const [newsLoading, setNewsLoading] = useState(false);
   const [watchlist, setWatchlist] = useState([]);
-  const API_BASE = 'https://stocks-sgv3.onrender.com';
+  const API_BASE = import.meta.env.VITE_API_URL || 'https://stocks-sgv3.onrender.com';
 
   // Check active user session on app mount
   useEffect(() => {
