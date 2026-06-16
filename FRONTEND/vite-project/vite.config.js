@@ -8,19 +8,19 @@ export default defineConfig({
   server: {
     proxy: {
       '/auth': {
-        target: 'https://stocks-sgv3.onrender.com',
+        target: 'http://localhost:3000',
         changeOrigin: true,
       },
       '/stock': {
-        target: 'https://stocks-sgv3.onrender.com',
+        target: 'http://localhost:3000',
         changeOrigin: true,
       },
       '/news': {
-        target: 'https://stocks-sgv3.onrender.com',
+        target: 'http://localhost:3000',
         changeOrigin: true,
       },
       '/watchlist': {
-        target: 'https://stocks-sgv3.onrender.com',
+        target: 'http://localhost:3000',
         changeOrigin: true,
       },
     },
