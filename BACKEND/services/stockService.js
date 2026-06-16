@@ -20,7 +20,14 @@ export const getStockQuote = async (symbol) => {
   const formattedSymbol = formatSymbol(symbol);
   try {
     // 1. Fetch live price details from the public Chart API (100% public & unblocked)
-    const chartRes = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${formattedSymbol}`);
+    const chartRes = await fetch(
+      `https://query1.finance.yahoo.com/v8/finance/chart/${formattedSymbol}`,
+      {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+      }
+    );
     if (!chartRes.ok) {
       throw new Error(`Yahoo Chart API responded with status: ${chartRes.status}`);
     }
@@ -33,7 +40,14 @@ export const getStockQuote = async (symbol) => {
     // 2. Optional: Fetch metadata (sector, industry, longName) from the public Search API
     let companyName = meta.longName || meta.shortName || meta.symbol;
     try {
-      const searchRes = await fetch(`https://query2.finance.yahoo.com/v1/finance/search?q=${formattedSymbol}`);
+      const searchRes = await fetch(
+        `https://query2.finance.yahoo.com/v1/finance/search?q=${formattedSymbol}`,
+        {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+          }
+        }
+      );
       if (searchRes.ok) {
         const searchData = await searchRes.json();
         const firstQuote = searchData.quotes?.find(q => q.symbol === formattedSymbol);
@@ -86,7 +100,14 @@ export const getMarketMovers = async () => {
   try {
     const promises = nifty50.map(async (symbol) => {
       try {
-        const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}`);
+        const res = await fetch(
+          `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}`,
+          {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            }
+          }
+        );
         if (!res.ok) return null;
         const data = await res.json();
         const meta = data.chart?.result?.[0]?.meta;
@@ -143,9 +164,16 @@ export const getMarketMovers = async () => {
 export const getStockNews = async (symbol) => {
   const formattedSymbol = formatSymbol(symbol);
   try {
-    const searchRes = await fetch(`https://query2.finance.yahoo.com/v1/finance/search?q=${formattedSymbol}`);
-    if (!searchRes) {
-      throw new Error(`Search API returned status ${searchRes.status}`);
+    const searchRes = await fetch(
+      `https://query2.finance.yahoo.com/v1/finance/search?q=${formattedSymbol}`,
+      {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+      }
+    );
+    if (!searchRes.ok) {
+      throw new Error(`Search API responded with status: ${searchRes.status}`);
     }
     const data = await searchRes.json();
     return data.news || [];
